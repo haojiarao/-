@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ceshi from './pages/home/index.vue'
+import ceshi from './pages/home/huailai.vue'
 
 export default {
   name: 'App',

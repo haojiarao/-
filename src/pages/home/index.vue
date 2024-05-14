@@ -77,8 +77,6 @@ export default {
           if (obj.name === '外框') {
             // 模型材质重新设置
             // 模型边线设置
-
-
             var vertexShader = [
               'varying vec3 vColor;',
               'varying vec3	vVertexNormal;',
@@ -97,29 +95,27 @@ export default {
               '}'
             ].join('\n')
             var fragmentShader = [
-              `uniform float boxH; // 立方体高度
-        uniform sampler2D myTexture; // 纹理uniform
-        varying vec3 vVertexNormal; // 顶点法向量
-        varying vec3 vColor; // 顶点颜色
-        varying vec2 vUv; // 纹理坐标
-        varying float v_pz; // y的值
-
-        float plot(float pct) {
-        return smoothstep(pct - 30.0, pct, v_pz) - smoothstep(pct, pct + 0.1, v_pz);
-        }
-        void main() {
-        float f1 = plot(boxH);
-        vec4 texColor = texture2D(myTexture, vUv); // 使用纹理坐标获取纹理颜色
-        vec4 finalColor = mix(vec4(vColor,0.0), texColor, f1); // 使用纹理颜色替换黄色
-
-        if (f1 > 0.0) {
-          vec4 lightColor = vec4(1.0, 0.85, 0.6, 1.0); // 浅金色
-        gl_FragColor = mix(texColor, lightColor, f1);
-        } else {
-            gl_FragColor = texColor; // 使用模型的原始纹理颜色
-        // 其他区域红色且完全不透明
-        }
-        }`
+              'uniform float boxH;', // 立方体高度
+              'uniform sampler2D myTexture;', // 纹理uniform
+              'varying vec3 vVertexNormal;', // 顶点法向量
+              'varying vec3 vColor;', // 顶点颜色
+              'varying vec2 vUv;', // 纹理坐标
+              'varying float v_pz;', // y的值
+              'float plot(float pct) {',
+              'return smoothstep(pct - 30.0, pct, v_pz) - smoothstep(pct, pct + 0.1, v_pz);',
+              '}',
+              'void main() {',
+              'float f1 = plot(boxH);',
+              'vec4 texColor = texture2D(myTexture, vUv);', // 使用纹理坐标获取纹理颜色
+              'vec4 finalColor = mix(vec4(vColor,0.0), texColor, f1);', // 使用纹理颜色替换黄色
+              'if (f1 > 0.0) {',
+              'vec4 lightColor = vec4(1.0, 0.85, 0.6, 1.0);', // 浅金色
+              'gl_FragColor = mix(texColor, lightColor, f1);',
+              '} else {',
+              'gl_FragColor = texColor;', // 使用模型的原始纹理颜色
+              // 其他区域红色且完全不透明
+              '}',
+              '}',
 
 
             ].join('\n')
@@ -144,11 +140,7 @@ export default {
               fragmentShader: ShaderBar.fragmentShader,
               vertexColors: ShaderBar,  //暂时未理解该处作用
 
-              texture: {
-                // 加载纹理贴图返回Texture对象作为texture的值
-                // Texture对象对应着色器中sampler2D数据类型变量
-                value: myTexture
-              },
+
 
             })
             material.renderOrder = 1;
